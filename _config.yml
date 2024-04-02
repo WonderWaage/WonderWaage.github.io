@@ -8,9 +8,9 @@
 
 # Basic Site Settings
 locale                   : "en-US"
-title                    : "Your Name / Site Title"
+title                    : WonderWaage
 title_separator          : "-"
-name                     : &name "Your Name"
+name                     : &name "Chris Waage"
 description              : &description "personal description"
 url                      : https://wonderwaage.github.io
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
