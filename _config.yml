@@ -21,7 +21,7 @@ repository               : "WonderWaage/WonderWaage.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.png"
+  avatar           : "https://i.imgur.com/ZyE1mUq.png"
   name             : "Chris Waage"
   pronouns         : "he/him"  
   bio              : "A useless asshole"
