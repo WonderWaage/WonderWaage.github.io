@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f8f6ef"><meta name="description" content="Et hyggeligt dansk ordspil med 4 gange 4 bogstaver.">
+<title>Ordsalat · Dansk ordspil</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page">
+ <header class="topbar">
+  <a class="logo" href="./"><span class="logo-mark" aria-hidden="true">Ø</span><span class="logo-text">ORDSALAT</span></a>
+  <nav class="top-nav"><a class="navlink active" href="./">Spil</a><a class="navlink" href="editor.html">Lav puslespil</a></nav>
+ </header>
+ <main class="game-layout">
+  <section class="main-panel" aria-label="Ordspil">
+   <p id="eyebrow" class="eyebrow">Dagens ordsalat</p>
+   <h1 id="theme" class="puzzle-title">Indlæser...</h1>
+   <p id="hint" class="puzzle-hint"></p>
+   <div class="stats"><span id="progress">Fundet: <strong>0 af 0</strong></span><span><span id="timer" aria-label="Spilletid">00:00</span> · <span id="status">0 hint brugt</span></span></div>
+   <div id="lengths" class="lengths" aria-label="Ordenes længder"></div>
+   <div class="board-wrap" id="board-wrap">
+     <div class="board" id="board" aria-label="Bogstavfelt med fire rækker og fire kolonner"></div>
+     <svg id="lines" class="selection-line" aria-hidden="true"><polyline id="path-line" points=""></polyline></svg>
+   </div>
+   <div class="current-word empty" id="current-word" aria-live="polite">Vælg et bogstav for at begynde</div>
+   <p id="feedback" class="feedback" role="status" aria-live="polite">Træk over bogstaver, også på skrå.</p>
+   <div class="actions"><button id="check" class="btn btn-primary" type="button">Tjek ord</button><button id="clear" class="btn" type="button">Ryd valg</button><button id="hint-btn" class="btn" type="button">💡 Hint</button></div>
+   <div id="victory" hidden></div>
+  </section>
+  <aside class="side-panel">
+   <h2 class="side-title">Vælg et puslespil</h2>
+   <p class="side-copy">Find alle ord i temaet. Det samme bogstav kan indgå i flere ord.</p>
+   <div class="archive" id="archive"></div>
+   <div class="aside-tip">Sådan spiller du: Før fingeren eller musen over bogstaver ved siden af hinanden. Diagonaler tæller også. Du kan også trykke på ét bogstav ad gangen og derefter vælge <strong>Tjek ord</strong>. Når du finder et ord, forsvinder de bogstaver, som ikke længere er nødvendige, og resten falder ned.</div>
+   <div style="margin-top:17px"><button class="btn btn-small btn-wide" id="restart" type="button">Start dette puslespil forfra</button></div>
+  </aside>
+ </main>
+ <footer class="footer">Lavet med kærlighed og 16 bogstaver · <a href="editor.html">Tilføj nye puslespil</a></footer>
+</div>
+<script src="engine.js"></script><script src="puzzles.js"></script><script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="da">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f8f6ef"><title>Lav puslespil · Ordsalat</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div class="page">
+ <header class="topbar"><a class="logo" href="./"><span class="logo-mark">Ø</span><span class="logo-text">ORDSALAT</span></a><nav class="top-nav"><a class="navlink" href="./">Spil</a><a class="navlink active" href="editor.html">Lav puslespil</a></nav></header>
+ <div class="editor-head"><p class="eyebrow">Til dig, der laver opgaverne</p><h1>Lav en ny ordsalat</h1><p>Skriv dine danske ord. Vi arrangerer bogstaverne, så de kan forbindes i et ægte 4 × 4-puslespil.</p></div>
+ <main class="editor-grid">
+ <section class="editor-card">
+  <h2>1. Dine ord</h2>
+  <div class="field"><label for="theme-in">Tema</label><input id="theme-in" maxlength="65" value="Morgenmad" placeholder="F.eks. I haven"></div>
+  <div class="field"><label for="hint-in">Lille ledetråd (valgfri)</label><input id="hint-in" maxlength="130" value="Hvad står på morgenbordet?" placeholder="F.eks. Noget, der gror"></div>
+  <div class="field"><label for="words-in">Ord, ét på hver linje</label><textarea id="words-in" spellcheck="false">KAFFE
+BRØD
+SMØR
+OST</textarea><small>Brug Æ, Ø og Å som normalt. Ordene må godt tilsammen være længere end 16 bogstaver, da flere ord kan bruge samme felt. Ingen bindestreger eller mellemrum.</small></div>
+  <div class="letter-meter"><span>Samlet antal bogstaver (mindst 16)</span><strong id="letter-total">16 bogstaver</strong></div>
+  <div class="editor-buttons"><button id="generate" type="button" class="btn btn-primary">✨ Generer puslespil</button><button id="play-preview" type="button" class="btn" disabled>Prøv det</button></div>
+  <p id="editor-message" class="editor-message" role="status" aria-live="polite"></p>
+  <div class="divider"></div>
+  <h2>2. Udgiv til din mor</h2>
+  <div class="editor-info">Puslespil gemmes automatisk <strong>på denne enhed</strong>. For at gøre dem tilgængelige på hendes hjemmeside, skal du hente en ny <code>puzzles.js</code> og lægge den på GitHub. Din browser kan ikke ændre GitHub-siden af sig selv.</div>
+  <div class="editor-buttons"><button id="download-js" class="btn btn-primary" type="button">↓ Hent puzzles.js</button><button id="download-json" class="btn" type="button">↓ Sikkerhedskopi (.json)</button></div>
+  <p class="editor-step">På GitHub: Åbn mappen <strong>ord-salat</strong> i lageret <strong>WonderWaage.github.io</strong>, udskift filen <code>puzzles.js</code> med din download, og gem ændringen. Siden opdateres derefter.</p>
+  <div class="divider"></div>
+  <div class="field"><label for="import-json">Indlæs en tidligere sikkerhedskopi</label><input id="import-json" type="file" accept=".json,application/json"><small>Indlæsning erstatter listen i editoren. Lav en sikkerhedskopi først.</small></div>
+ </section>
+ <section class="editor-card">
+  <h2>Forhåndsvisning</h2>
+  <p class="side-copy" id="preview-title">Tryk på “Generer puslespil”.</p>
+  <div class="mini-board" id="mini-board" aria-label="Forhåndsvisning af de 16 bogstaver"></div>
+  <p class="preview-note">Fire rækker. Fire kolonner. Altid.</p>
+  <div class="divider"></div>
+  <h2>Mine puslespil <span id="puzzle-count"></span></h2>
+  <p class="side-copy">Klik på et puslespil for at se det, eller fjern det fra samlingen.</p>
+  <div id="draft-list" class="draft-list"></div>
+ </section>
+ </main>
+ <footer class="footer"><a href="./">Tilbage til spillet</a></footer>
+</div>
+<script src="engine.js"></script><script src="puzzles.js"></script><script src="editor.js"></script>
+</body></html>
