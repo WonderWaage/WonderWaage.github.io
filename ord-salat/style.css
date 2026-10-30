@@ -24,3 +24,9 @@ a{color:var(--teal)}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 .tile.hinted:not(.selected){background:var(--yellow);border-color:#b49445;animation:none}
+
+/* One puzzle at a time: no archive or sidebar. */
+.game-layout{grid-template-columns:minmax(0,600px);justify-content:center}
+.next-area{margin-top:20px}
+.next-area .btn{max-width:410px;margin-inline:auto}
+[hidden]{display:none!important}
