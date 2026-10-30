@@ -7,7 +7,7 @@
     if(response.ok){
       const listing=await response.json();
       const discovered=listing.filter(f=>f.type==='file'&&/^[-a-zA-Z0-9_]+\\.js$/.test(f.name)).map(f=>'pakker/'+f.name).sort();
-      if(discovered.length)files=discovered;
+      if(discovered.length)files=discovered.sort((a,b)=>a.endsWith('/start-300.js')?-1:b.endsWith('/start-300.js')?1:a.localeCompare(b));
     }
   }catch(e){console.warn('Pakkelisten kunne ikke indlæses; bruger startpakken.',e);}
   const load=src=>new Promise((resolve,reject)=>{
