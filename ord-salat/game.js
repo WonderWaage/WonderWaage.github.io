@@ -4,6 +4,7 @@ const E = window.SaladEngine;
 const $ = id => document.getElementById(id);
 const builtIn = (window.ORDSALAT_PUZZLES || []).filter(E.validatePuzzle);
 const params = new URLSearchParams(location.search);
+const POSITION_KEY='ord-salat-current-puzzle-v1';
 let puzzle = null, board = [], found = [], hints = 0, selection = [], hintedCell = -1, dragId = null, dragMoved = false, elapsedSeconds = 0, msg = '', msgKind = '', hintWord = '', revealedHints = 0, hintPath = [];
 const STORAGE = 'ord-salat-state-v1:';
 function safeRead(key) {try{return JSON.parse(localStorage.getItem(key))}catch{return null}}
@@ -26,6 +27,7 @@ function start(p) {
   elapsedSeconds = save && Number.isFinite(save.elapsedSeconds) ? save.elapsedSeconds : 0;
   msg = ''; msgKind='';
   history.replaceState(null, '', location.pathname + '?p=' + encodeURIComponent(p.id));
+  try{localStorage.setItem(POSITION_KEY,p.id)}catch{}
   render();
 }
 function remember() {safeWrite(STORAGE + puzzle.id, {signature:signature(puzzle),board,found,hints,elapsedSeconds,hintWord,revealedHints});}
@@ -194,5 +196,5 @@ $('next').addEventListener('click',()=>{
 });
 $('restart').addEventListener('click',()=>{if(!puzzle||!confirm('Vil du starte puslespillet forfra?'))return;try{localStorage.removeItem(STORAGE+puzzle.id)}catch{}start(puzzle);});
 if(!builtIn.length){$('theme').textContent='Ingen puslespil endnu';$('hint').textContent='Åbn “Lav puslespil” for at lave det første.';$('hint-btn').disabled=true;}
-else{start(builtIn.find(p=>p.id===params.get('p'))||builtIn[0]);}
+else{let last=null;try{last=localStorage.getItem(POSITION_KEY)}catch{}start(builtIn.find(p=>p.id===(params.get('p')||last))||builtIn[0]);}
 })();
