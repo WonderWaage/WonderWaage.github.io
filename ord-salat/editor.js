@@ -4,8 +4,8 @@ const E=window.SaladEngine, $=id=>document.getElementById(id);
 const STORAGE='ord-salat-editor-v1';
 const published=(window.ORDSALAT_PUZZLES||[]).filter(E.validatePuzzle);
 let puzzles,selected=null;
-try {const raw=JSON.parse(localStorage.getItem(STORAGE));puzzles=Array.isArray(raw)?raw.filter(E.validatePuzzle):published.slice();}
-catch {puzzles=published.slice();}
+try {const raw=JSON.parse(localStorage.getItem(STORAGE));puzzles=Array.isArray(raw)?raw.filter(E.validatePuzzle):[];}
+catch {puzzles=[];}
 function store(){try{localStorage.setItem(STORAGE,JSON.stringify(puzzles))}catch{}}
 function words(){return $('words-in').value.split(/[\n,;]+/).map(E.normalizeWord).filter(Boolean);}
 function meter(){const n=words().reduce((sum,w)=>sum+E.countLetters(w),0);$('letter-total').textContent=n+' bogstaver';$('letter-total').className=n>=16&&n<=48?'good':'bad';}
@@ -26,15 +26,35 @@ function drawList(){
    const small=document.createElement('small');small.textContent=p.words.length+' ord · '+p.words.join(', ');label.append(strong,small);view.append(label);
    view.addEventListener('click',()=>preview(p));
    const del=document.createElement('button');del.className='btn btn-small btn-danger';del.textContent='Fjern';del.type='button';del.setAttribute('aria-label','Fjern '+p.theme);
-   del.addEventListener('click',()=>{if(!confirm('Fjerne “'+p.theme+'” fra samlingen?'))return;puzzles.splice(index,1);if(selected?.id===p.id)preview(null);store();drawList();say('Puslespillet er fjernet fra din lokale samling. Hent puzzles.js for at opdatere hjemmesiden.');});
+   del.addEventListener('click',()=>{if(!confirm('Fjerne “'+p.theme+'” fra samlingen?'))return;puzzles.splice(index,1);if(selected?.id===p.id)preview(null);store();drawList();say('Puslespillet er fjernet fra din lokale samling. Hent en ny pakke for at udgive dine ændringer.');});
    row.append(view,del);root.append(row);
  });
 }
+async function bulkGenerate(){
+  const lines=$('bulk-in').value.split(/\n/).map(s=>s.trim()).filter(Boolean);
+  if(!lines.length){say('Indsæt mindst én linje i masseoprettelse.',true);return;}
+  const button=$('bulk-generate');button.disabled=true;
+  let made=0, failures=[];
+  for(let i=0;i<lines.length;i++){
+    const fields=lines[i].split('|').map(s=>s.trim());
+    const [theme,hint,...ws]=fields;
+    try{
+      if(ws.length<2)throw Error('Brug formatet Tema | Ledetråd | ORD | ORD | ORD');
+      const p=E.makePuzzle(theme,hint,ws);
+      if(published.some(x=>x.id===p.id)||puzzles.some(x=>x.id===p.id))throw Error('ID findes allerede');
+      puzzles.push(p);made++;
+    }catch(err){failures.push('Linje '+(i+1)+': '+err.message);}
+    if(i%3===0){say('Genererer '+(i+1)+' af '+lines.length+' ...');await new Promise(resolve=>setTimeout(resolve,0));}
+  }
+  store();drawList();button.disabled=false;
+  say(made+' opgaver oprettet. '+(failures.length?'Fejl: '+failures.slice(0,4).join(' / '):'Hent pakken for at udgive.'));
+}
+$('bulk-generate').addEventListener('click',bulkGenerate);
 function download(name,content,type){const blob=new Blob([content],{type});const href=URL.createObjectURL(blob);const a=document.createElement('a');a.href=href;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(href),2000);}
 $('generate').addEventListener('click',()=>{
  try{
    const p=E.makePuzzle($('theme-in').value,$('hint-in').value,words());
-   puzzles.push(p);store();drawList();preview(p);say('Puslespillet er klar og gemt på denne enhed. Hent puzzles.js for at udgive det.');
+   puzzles.push(p);store();drawList();preview(p);say('Puslespillet er klar. Hent en ny pakke for at udgive det.');
  }catch(err){say(err.message,true);}
 });
 $('play-preview').addEventListener('click',()=>{
