@@ -99,7 +99,7 @@ function renderBoard(previous=null) {
 function render() {
   $('theme').textContent=puzzle.theme;
   $('hint').textContent=puzzle.hint||'Find ordene, der passer til temaet.';
-  $('eyebrow').textContent='Dansk ordsalat · 4 × 4';
+  $('eyebrow').textContent='Opgave '+(builtIn.indexOf(puzzle)+1)+' af '+builtIn.length+' · 4 × 4';
   $('progress').innerHTML='Fundet: <strong>'+found.length+' af '+puzzle.words.length+'</strong>';
   $('status').textContent=hints+' hint brugt';
   $('timer').textContent=clock();
@@ -110,17 +110,12 @@ function render() {
   renderBoard();
   $('feedback').textContent=msg||'Træk over bogstaver, også på skrå.';$('feedback').className='feedback '+msgKind;
   $('victory').hidden=found.length!==puzzle.words.length;
-  if(found.length===puzzle.words.length){$('victory').innerHTML='<div class="success-card"><h2>🎉 Flot klaret!</h2><p>Du fandt alle '+puzzle.words.length+' ord på '+clock()+' med '+hints+' hint. Vælg en ny opgave til højre.</p></div>';}
-  $('archive').replaceChildren();
-  builtIn.forEach((p,index)=>{
-    const finished=savedProgress(p)?.found?.length===p.words.length;
-    const btn=document.createElement('button');btn.className='archive-item'+(p.id===puzzle.id?' active':'');btn.type='button';
-    const left=document.createElement('span');left.innerHTML='';
-    const name=document.createElement('span');name.className='archive-name';name.textContent=(index+1)+'. '+p.theme;
-    const sub=document.createElement('span');sub.className='archive-sub';sub.textContent=p.words.length+' ord';left.append(name,sub);btn.append(left);
-    if(finished){const check=document.createElement('span');check.className='archive-check';check.textContent='✓';btn.append(check);}
-    btn.addEventListener('click',()=>start(p));$('archive').append(btn);
-  });
+  if(found.length===puzzle.words.length){$('victory').innerHTML='<div class="success-card"><h2>🎉 Flot klaret!</h2><p>Du fandt alle '+puzzle.words.length+' ord på '+clock()+' med '+hints+' hint. Tryk på Næste for at spille videre.</p></div>';}
+  const next=$('next');
+  if(next){
+    next.hidden=builtIn.indexOf(puzzle)>=builtIn.length-1;
+    next.textContent=found.length===puzzle.words.length?'Næste opgave →':'Næste →';
+  }
 }
 function addTile(i) {
   if (!board[i] || remaining().length===0) return;
@@ -193,7 +188,11 @@ setInterval(()=>{if(puzzle && remaining().length && document.visibilityState==='
 
 $('clear').addEventListener('click',()=>{selection=[];setMessage('Vælg et nyt ord.');paintSelection();});
 $('hint-btn').addEventListener('click',showHint);
+$('next').addEventListener('click',()=>{
+  const index=builtIn.indexOf(puzzle);
+  if(index>=0 && index<builtIn.length-1)start(builtIn[index+1]);
+});
 $('restart').addEventListener('click',()=>{if(!puzzle||!confirm('Vil du starte puslespillet forfra?'))return;try{localStorage.removeItem(STORAGE+puzzle.id)}catch{}start(puzzle);});
-if(!builtIn.length){$('theme').textContent='Ingen puslespil endnu';$('hint').textContent='Åbn “Lav puslespil” for at lave det første.';$('check').disabled=true;$('hint-btn').disabled=true;}
+if(!builtIn.length){$('theme').textContent='Ingen puslespil endnu';$('hint').textContent='Åbn “Lav puslespil” for at lave det første.';$('hint-btn').disabled=true;}
 else{start(builtIn.find(p=>p.id===params.get('p'))||builtIn[0]);}
 })();
