@@ -22,3 +22,5 @@ a{color:var(--teal)}
 @media(max-width:810px){.game-layout{grid-template-columns:minmax(0,570px)}.side-panel{max-width:570px;width:100%}.editor-grid{grid-template-columns:minmax(0,1fr)}.editor-card{max-width:750px}}
 @media(max-width:520px){.page{padding:13px 12px 30px}.topbar{margin-bottom:13px}.logo-text{font-size:17px}.navlink{font-size:13px;padding:8px 6px}.main-panel{padding:20px 13px}.tile,.tile-empty{border-radius:11px}.board{gap:8px}.side-panel{padding:19px}.editor-card{padding:18px}.actions .btn{flex:1}.editor-buttons .btn{flex:1}.puzzle-title{font-size:30px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+.tile.hinted:not(.selected){background:var(--yellow);border-color:#b49445;animation:none}
